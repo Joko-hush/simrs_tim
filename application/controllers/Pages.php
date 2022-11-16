@@ -194,17 +194,15 @@ class Pages extends CI_Controller
 		$this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kegiatan berhasil diedit.</div>');
 		redirect('pages');
 	}
-	public function lihat()
+	public function lihatKunjungan()
 	{
-		$id = $this->db->get('id');
+		$id = $this->input->get('id');
 		$data['title'] = "SIMRS WEB APP";
-		$data['judul'] = "LIST KEGIATAN";
-		// $user = $this->master_models->getUser($this->session->userdata('phone'));
-		// $user_id = $user['id'];
-		var_dump($id);
-		die;
+		$data['judul'] = "";
+		$user = $this->master_models->getUser($this->session->userdata('phone'));
+		$user_id = $user['id'];
 
-		$data['kegiatan'] = $this->master_models->getKegiatanById($id);
+		$data['k'] = $this->master_models->getKegiatanById($id);
 
 		$this->load->view('pages/layout/header', $data);
 		$this->load->view('pages/layout/nav', $data);

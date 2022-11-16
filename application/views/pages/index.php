@@ -77,7 +77,7 @@
               ?>
               <tr class="<?= $c; ?>">
                 <td class="text-center">
-                  <a href="<?= base_url('pages/lihat') . '?id=' . $k['id']; ?>">
+                  <a href="<?= base_url('pages/lihatKunjungan') . '?id=' . $k['id']; ?>">
                     <i class="fa-solid fa-eye"></i>
                   </a>
                 </td>
