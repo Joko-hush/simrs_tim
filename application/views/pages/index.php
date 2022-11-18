@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-sm-4">
                   <div class="input-group input-group-static mb-4">
-                    <label>Dari</label>
+                    <label>Sampai</label>
                     <input class="form-control" type="date" name="date2" id="date2" value="<?= $date2; ?>">
                   </div>
                 </div>
@@ -44,11 +44,9 @@
         </div>
       </div>
 
-      <!-- <a href="<?= base_url('pages/kegiatan'); ?>" class="btn btn-primary mb-2">
-          Tambah Kegiatan
-        </a> -->
+
       <div class="table-responsive">
-        <table class="table table-bordered" id="tableKegiatan">
+        <table class="table table-bordered table-sm" id="tableKegiatan">
           <thead>
             <tr>
               <th></th>

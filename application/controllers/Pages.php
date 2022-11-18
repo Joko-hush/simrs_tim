@@ -1,8 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class Pages extends CI_Controller
 {
+	public function __construct()
+	{
+		parent::__construct();
+		is_logged_in();
+	}
+
 	private function tgl($date)
 	{
 		$y = substr($date, 0, 4);
@@ -28,12 +35,14 @@ class Pages extends CI_Controller
 		if (!$date1) {
 			$date1 = date('Ymd', strtotime('today'));
 		} else {
-			$date1 = date('Ymd', $date1);
+			$date1 = $this->_tgl($date1);
 		}
 		if (!$date2) {
 			$date2 = date('Ymd', strtotime('today'));
+			$this->Logs_models->logs('membuka data kegiatan', $this->tgl($date1), $this->tgl($date2));
 		} else {
-			$date1 = date('Ymd', $date2);
+			$date2 = $this->_tgl($date2);
+			$this->Logs_models->logs('Melakukan pencarian data kegiatan', $this->tgl($date1), $this->tgl($date2));
 		}
 		$data['date1'] = $this->tgl($date1);
 		$data['date2'] = $this->tgl($date2);
@@ -53,9 +62,11 @@ class Pages extends CI_Controller
 		$user = $this->master_models->getUser($this->session->userdata('phone'));
 		$user_id = $user['id'];
 
+
 		$this->form_validation->set_rules('unit', 'Unit', 'trim|required');
 		if ($this->form_validation->run() == false) {
-			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Unit kosong, Data tidak disimpan.</div>');
+			$this->Logs_models->logs('Gagal menambahkan data kegiatan', '', '');
+			$this->session->set_flashdata('message', '<div class="alert alert-danger text-white" role="alert">Unit kosong, Data tidak disimpan.</div>');
 			redirect('pages');
 		} else {
 			$unit = $this->input->post('unit');
@@ -82,7 +93,8 @@ class Pages extends CI_Controller
 				'deleted' => 0
 			];
 			$this->db->insert('kunjungan', $data);
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Sukses disimpan.</div>');
+			$this->Logs_models->logs('Berhasil menambahkan data kegiatan', $unit, '');
+			$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses disimpan.</div>');
 			redirect('pages');
 		}
 	}
@@ -95,6 +107,7 @@ class Pages extends CI_Controller
 		$id = $this->input->get('id');
 		$k = $this->db->get_where('kunjungan', ['id' => $id])->row_array();
 		$data['kunjungan'] = $k;
+		$this->Logs_models->logs('Membuka form paraf', '', $id);
 
 		$this->load->view('pages/layout/header', $data);
 		$this->load->view('pages/layout/nav', $data);
@@ -121,7 +134,8 @@ class Pages extends CI_Controller
 		$this->db->set('dateupdated', time());
 		$this->db->where('id', $id);
 		$this->db->update('kunjungan');
-		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Sukses berhasil di paraf.</div>');
+		$this->Logs_models->logs('Menambahkan paraf', $client, $id);
+		$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
 		redirect('pages');
 	}
 	public function delete()
@@ -131,7 +145,8 @@ class Pages extends CI_Controller
 		$this->db->set('dateupdated', time());
 		$this->db->where('id', $id);
 		$this->db->update('kunjungan');
-		$this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kegiatan berhasil dihapus.</div>');
+		$this->Logs_models->logs('menghapus kegiatan', '', $id);
+		$this->session->set_flashdata('message', '<div class="alert alert-info text-white" role="alert">Kegiatan berhasil dihapus.</div>');
 		redirect('pages');
 	}
 	public function edit()
@@ -146,7 +161,7 @@ class Pages extends CI_Controller
 
 		$data['masalah'] = $this->master_models->getAllMasalah();
 		$data['subunit'] = $this->master_models->getAllSubUnit();
-
+		$this->Logs_models->logs('membuka form edit', '', $id);
 		$this->load->view('pages/layout/header', $data);
 		$this->load->view('pages/layout/nav', $data);
 		$this->load->view('pages/editkegiatan', $data);
@@ -190,19 +205,20 @@ class Pages extends CI_Controller
 		}
 
 		$this->db->update('kunjungan');
-
-		$this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kegiatan berhasil diedit.</div>');
+		$this->Logs_models->logs('mengubah data kegiatan', '', $id);
+		$this->session->set_flashdata('message', '<div class="alert alert-info text-white" role="alert">Kegiatan berhasil diedit.</div>');
 		redirect('pages');
 	}
 	public function lihatKunjungan()
 	{
 		$id = $this->input->get('id');
 		$data['title'] = "SIMRS WEB APP";
-		$data['judul'] = "";
+		$data['judul'] = "Detil Kegiatan";
 		$user = $this->master_models->getUser($this->session->userdata('phone'));
 		$user_id = $user['id'];
 
 		$data['k'] = $this->master_models->getKegiatanById($id);
+		$this->Logs_models->logs('Melihat detil kegiatan', '', $id);
 
 		$this->load->view('pages/layout/header', $data);
 		$this->load->view('pages/layout/nav', $data);

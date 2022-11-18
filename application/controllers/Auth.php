@@ -7,8 +7,12 @@ class Auth extends CI_Controller
 
     public function index()
     {
-        $tlp = $this->session->userdata('phone');
+        $tlp = get_cookie('always');
+        if (!$tlp) {
+            $tlp = $this->session->userdata('phone');
+        }
         $user = $this->db->get_where('user', ['tlp' => $tlp])->row_array();
+        $user_ip = $this->ip_models->get_client_ip_2();
         if (!$user) {
             $this->form_validation->set_rules('user', 'user', 'required|trim');
             $this->form_validation->set_rules('password', 'Password', 'required|trim');
@@ -19,6 +23,12 @@ class Auth extends CI_Controller
                 $this->_login();
             }
         } else {
+            $data = [
+                'phone' => $user['tlp'],
+                'user' => $user['user']
+            ];
+            $this->session->set_userdata($data);
+            $this->Logs_models->logs('login', '', '');
             redirect('pages');
         }
     }
@@ -28,6 +38,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('username', 'username', 'required|trim');
         $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]', ['matches' => 'Password not match!', 'min_length' => 'password too short!']);
         $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+        $user_ip = $this->ip_models->get_client_ip_2();
         if ($this->form_validation->run() == false) {
             $data['title'] = 'SIMRS WEB APP';
 
@@ -36,9 +47,6 @@ class Auth extends CI_Controller
             $username = $this->input->post('username');
             $phone = $this->phone(trim($this->input->post('phone')));
             $password = $this->input->post('password1');
-            var_dump($phone);
-            die;
-
             $data = [
                 'user' => $username,
                 'tlp' => $phone,
@@ -52,7 +60,9 @@ class Auth extends CI_Controller
             $user_id = $user['id'];
             $text = "No Hp Anda baru saja mendaftarkan di aplikasi simrs. di https://rsdustira.co.id/simrs_tim/ dengan user $username dan password $password";
             $this->Wa_model->sendWa($phone, $text);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Selamat akun Anda sudah dibuat. Silahkan masuk</div>');
+
+            $this->Logs_models->logs('registrasi', '', '');
+            $this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Selamat akun Anda sudah dibuat. Silahkan masuk</div>');
             redirect('auth');
         }
     }
@@ -63,7 +73,7 @@ class Auth extends CI_Controller
 
         $user = $this->db->get_where('user', ['user' => $user])->row_array();
         if (!$user) {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Nama user tidak terdaftar atau tidak sesuai.</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-white" role="alert">Nama user tidak terdaftar atau tidak sesuai.</div>');
             redirect('auth');
         } else {
             if (password_verify($password, $user['password'])) {
@@ -71,6 +81,7 @@ class Auth extends CI_Controller
                     'phone' => $user['tlp'],
                     'user' => $user['user']
                 ];
+                $user_ip = $this->ip_models->get_client_ip_2();
                 $cookie = array(
                     'name'   => 'always',
                     'value'  => $user['tlp'],
@@ -79,10 +90,10 @@ class Auth extends CI_Controller
                 );
                 set_cookie($cookie);
                 $this->session->set_userdata($data);
-                // $this->Logs_models->logs($user['id'], 'login');
+                $this->Logs_models->logs('login', '', '');
                 redirect('pages');
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password dan Nama tidak sesuai.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-white" role="alert">Password dan Nama tidak sesuai.</div>');
                 redirect('auth');
             }
         }
@@ -114,17 +125,16 @@ class Auth extends CI_Controller
     }
     public function logout()
     {
-        $data['user'] = $this->db->get_where('user', ['tlp' => $this->session->userdata('phone')])->row_array();
+        $this->Logs_models->logs('Logout', '', '');
         delete_cookie('always');
-
         $this->session->sess_destroy();
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out.</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">You have been logged out.</div>');
         redirect('auth');
     }
     public function ubahPassword()
     {
         $data['title'] = 'SIMRS WEB APP';
-
+        $user_ip = $this->ip_models->get_client_ip_2();
         $this->form_validation->set_rules('oldPassword', 'Password Lama', 'required|trim');
         $this->form_validation->set_rules('password1', 'Password Baru', 'required|trim|min_length[6]|matches[password2]', ['matches' => 'Password not match!', 'min_length' => 'password too short!']);
         $this->form_validation->set_rules('password2', 'Konfirmasi Password Baru', 'required|trim|matches[password1]');
@@ -139,10 +149,10 @@ class Auth extends CI_Controller
                 $this->db->set('password', $new);
                 $this->db->where('id', $user['id']);
                 $this->db->update('user');
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Anda berhasil merubah password.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Anda berhasil merubah password.</div>');
                 redirect('auth/ubahPassword');
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password Lama tidak sesuai.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-white" role="alert">Password Lama tidak sesuai.</div>');
                 redirect('auth/ubahPassword');
             }
         }

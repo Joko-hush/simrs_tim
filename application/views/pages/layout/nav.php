@@ -25,21 +25,42 @@
                                  <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
                                      <div class="d-none d-lg-block">
                                          <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-                                             Landing Pages
+                                             WEB APP
                                          </h6>
-                                         <a href="./pages/about-us.html" class="dropdown-item border-radius-md">
-                                             <span>About Us</span>
-                                         </a>
-                                         <a href="./pages/contact-us.html" class="dropdown-item border-radius-md">
-                                             <span>Contact Us</span>
-                                         </a>
-                                         <a href="./pages/author.html" class="dropdown-item border-radius-md">
-                                             <span>Author</span>
+
+                                         <a href="<?= base_url('pages'); ?>" class="dropdown-item border-radius-md">
+                                             <span>KEGIATAN SIM KELILING</span>
                                          </a>
 
                                      </div>
                                  </div>
                              </li>
+                             <?php if ($this->session->userdata('phone') == '62881024913954') : ?>
+                                 <li class="nav-item dropdown dropdown-hover mx-2">
+                                     <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                                         <i class="material-icons opacity-6 me-2 text-md">dashboard</i>
+                                         Admin
+                                         <img src="<?= base_url(); ?>assets/img/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-auto ms-md-2">
+                                     </a>
+                                     <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages">
+                                         <div class="d-none d-lg-block">
+                                             <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                                                 ADMIN
+                                             </h6>
+                                             <a href="<?= base_url('admin/dashboard'); ?>" class="dropdown-item border-radius-md">
+                                                 <span>DASHBOARD</span>
+                                             </a>
+                                             <a href="<?= base_url('admin/deleted'); ?>" class="dropdown-item border-radius-md">
+                                                 <span>DELETED</span>
+                                             </a>
+                                             <a href="<?= base_url('aktivity/aktivitasUser'); ?>" class="dropdown-item border-radius-md">
+                                                 <span>Log User</span>
+                                             </a>
+
+                                         </div>
+                                     </div>
+                                 </li>
+                             <?php endif; ?>
                              <li class="nav-item dropdown dropdown-hover mx-2">
                                  <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
                                      <!-- <i class="material-symbols-outlined opacity-6 me-2 text-md">User</i> -->
@@ -51,6 +72,9 @@
                                          <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
                                              Account
                                          </h6>
+                                         <a href="<?= base_url('aktivity/aktivitasPerUser'); ?>" class="dropdown-item border-radius-md">
+                                             <span>Aktivity</span>
+                                         </a>
                                          <a href="<?= base_url('auth/ubahPassword'); ?>" class="dropdown-item border-radius-md">
                                              <span>Change Password</span>
                                          </a>

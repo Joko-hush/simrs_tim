@@ -87,6 +87,40 @@
             ],
             stateSave: true
         });
+        $('#tableKegiatanSelesai').DataTable({
+
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Save to Excel',
+                    className: 'btn-success mr-1'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn-warning'
+                }
+            ],
+            stateSave: true
+        });
+        $('#tableKegiatanBelumSelesai').DataTable({
+
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Save to Excel',
+                    className: 'btn-success mr-1'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn-warning'
+                }
+            ],
+            stateSave: true
+        });
     });
 </script>
 
