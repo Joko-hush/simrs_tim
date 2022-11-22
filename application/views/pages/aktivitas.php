@@ -24,6 +24,7 @@
                               <th>Aktivitas</th>
                               <th>Client</th>
                               <th>Ket</th>
+                              <th>IP</th>
                           </tr>
                       </thead>
                       <tbody class="align-middle">
@@ -32,11 +33,16 @@
                               <tr>
                                   <td><?= $n++; ?></td>
                                   <td><?= date('Y-m-d H:i:s', $l['waktu']); ?></td>
-                                  <?php $u = $this->master_models->getUserById($l['user_id']); ?>
-                                  <td><?= $u['user']; ?></td>
+                                  <?php if ($l['user_id'] == '') : ?>
+                                      <td></td>
+                                  <?php else : ?>
+                                      <?php $u = $this->master_models->getUserById($l['user_id']); ?>
+                                      <td><?= $u['user']; ?></td>
+                                  <?php endif; ?>
                                   <td><?= $l['aktifitas']; ?></td>
                                   <td><?= $l['dari']; ?></td>
                                   <td><?= $l['menjadi']; ?></td>
+                                  <td><?= $l['device']; ?></td>
                               </tr>
                           <?php endforeach; ?>
                       </tbody>

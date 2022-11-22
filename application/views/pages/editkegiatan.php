@@ -11,7 +11,7 @@
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
     <section class="pt-3 pb-4" id="count-stats">
       <div class="container">
-        <form method="POST" action="<?= base_url('pages/prosesEdit'); ?>">
+        <form method="POST" action="<?= base_url('pages/prosesEdit'); ?>" enctype='multipart/form-data'>
           <input type="hidden" name="id" value="<?= $kunjungan['id']; ?>">
           <div class="col-lg-12">
             <div class="input-group input-group-static mb-4">
@@ -73,7 +73,7 @@
             <label class="text-left" for="">Tanda Tangan:</label>
             <br>
             <div id="sign">
-              <img src="<?= base_url('assets/img/ttd/') . $kunjungan['paraf']; ?>" alt="TTD Client">
+              <img src="<?= base_url('assets/img/ttd/') . $kunjungan['paraf']; ?>" alt="TTD Client" class="img img-thumbnail">
             </div>
             <br />
             <div id="sig"></div>
@@ -83,6 +83,12 @@
           </div>
 
           <br />
+          <div class="col-lg-12">
+            <div class="input-group input-group-static mb-4">
+              <label>Tambahkan File</label>
+              <input class="form-control" type="file" name="image" id="image">
+            </div>
+          </div>
           <div class="row text-center">
             <div class="col-sm-6">
               <a href="<?= base_url('pages'); ?>" class="btn btn-danger mx-auto">Batal</a>

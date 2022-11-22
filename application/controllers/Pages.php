@@ -62,8 +62,7 @@ class Pages extends CI_Controller
 		$user = $this->master_models->getUser($this->session->userdata('phone'));
 		$user_id = $user['id'];
 
-
-		$this->form_validation->set_rules('unit', 'Unit', 'trim|required');
+		$this->form_validation->set_rules('masalah', 'masalah', 'trim|required');
 		if ($this->form_validation->run() == false) {
 			$this->Logs_models->logs('Gagal menambahkan data kegiatan', '', '');
 			$this->session->set_flashdata('message', '<div class="alert alert-danger text-white" role="alert">Unit kosong, Data tidak disimpan.</div>');
@@ -71,8 +70,21 @@ class Pages extends CI_Controller
 		} else {
 			$unit = $this->input->post('unit');
 			$jp = $this->input->post('jp');
+			$unitlain = $this->input->post('unitlain');
 			$masalah = trim($this->input->post('masalah'));
 			$penyelsaian = trim($this->input->post('penyelsaian'));
+			if ($unit == '') {
+				$this->db->where('sub_unit', $unitlain);
+				$cek = $this->db->get('m_unit')->row_array();
+				$cekUnit = count($cek);
+				if ($cekUnit > 0) {
+					$unit = $cek['sub_unit'];
+				} else {
+					$dataUnit = ['unit' => $unitlain, 'sub_unit' => $unitlain, 'instalasi' => 'STAFF MANAJEMEN', 'isactive' => 1];
+					$this->db->insert('m_unit', $dataUnit);
+					$unit = $unitlain;
+				}
+			}
 			$subunit = $this->master_models->getSubUnit($unit);
 
 			$instalasi = $subunit['instalasi'];
@@ -116,27 +128,43 @@ class Pages extends CI_Controller
 	}
 	public function saveparaf()
 	{
-		$id = $this->input->post('id');
-		$client = $this->input->post('client');
+		$this->form_validation->set_rules('client', 'Client', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Tidak ada perubahan</div>');
+			redirect('pages/paraf');
+		} else {
+			$id = $this->input->post('id');
+			$client = $this->input->post('client');
 
-		$folderPath = FCPATH . "assets/img/ttd/";
-		$image_parts = explode(";base64,", $_POST['signed']);
-		$image_type_aux = explode("image/", $image_parts[0]);
-		$image_type = $image_type_aux[1];
-		$image_base64 = base64_decode($image_parts[1]);
-		$filename = uniqid() . '.' . $image_type;
-		$file = $folderPath . $filename;
-		file_put_contents($file, $image_base64);
-
-		$this->db->set('mengetahui', $client);
-		$this->db->set('paraf', $filename);
-		$this->db->set('status', 1);
-		$this->db->set('dateupdated', time());
-		$this->db->where('id', $id);
-		$this->db->update('kunjungan');
-		$this->Logs_models->logs('Menambahkan paraf', $client, $id);
-		$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
-		redirect('pages');
+			$folderPath = FCPATH . "assets/img/ttd/";
+			$image_parts = explode(";base64,", $_POST['signed']);
+			$image_type_aux = explode("image/", $image_parts[0]);
+			$image_type = $image_type_aux[1];
+			if ($image_type == '') {
+				$this->db->set('mengetahui', $client);
+				$this->db->set('status', 1);
+				$this->db->set('dateupdated', time());
+				$this->db->where('id', $id);
+				$this->db->update('kunjungan');
+				$this->Logs_models->logs('Menambahkan paraf', $client, $id);
+				$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
+				redirect('pages');
+			} else {
+				$image_base64 = base64_decode($image_parts[1]);
+				$filename = uniqid() . '.' . $image_type;
+				$file = $folderPath . $filename;
+				file_put_contents($file, $image_base64);
+				$this->db->set('paraf', $filename);
+				$this->db->set('mengetahui', $client);
+				$this->db->set('status', 1);
+				$this->db->set('dateupdated', time());
+				$this->db->where('id', $id);
+				$this->db->update('kunjungan');
+				$this->Logs_models->logs('Menambahkan paraf', $client, $id);
+				$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
+				redirect('pages');
+			}
+		}
 	}
 	public function delete()
 	{

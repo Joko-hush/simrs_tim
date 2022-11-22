@@ -21,7 +21,7 @@
             </button>
           </div>
           <div class="col-sm-8 text-end">
-            <form action="<?= base_url('pages/index'); ?>" method="post">
+            <form action="<?= base_url('pages/index'); ?>" method="post" enctype='multipart/form-data'>
               <div class="row align-middle">
                 <div class="col-sm-3">Tanggal</div>
                 <div class="col-sm-4">
@@ -123,6 +123,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+
           <form method="POST" action="<?= base_url('pages/tambahKegiatan'); ?>">
             <div class="row justify-space-between py-2">
               <div class="col-lg-12">
@@ -134,6 +135,12 @@
                       <option value="<?= $su['subunit']; ?>"><?= $su['subunit']; ?></option>
                     <?php endforeach; ?>
                   </Select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="input-group input-group-static mb-4">
+                  <label>Unit Lain</label>
+                  <input type="text" class="form-control" name="unitlain" id="unitlain" placeholder="di isi bila tidak ada di daftar unit">
                 </div>
               </div>
               <div class="col-lg-12">
@@ -158,6 +165,28 @@
                   <label>Penyelsaian Masalah</label>
                   <textarea class="form-control" name="penyelsaian" id="penyelsaian" rows="5"></textarea>
                 </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="input-group input-group-static mb-4">
+                  <label>Tambahkan File</label>
+                  <input class="form-control" type="file" name="image" id="image">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="input-group input-group-static mb-4">
+                  <label>Nama</label>
+                  <input class="form-control" type="text" name="client" id="client">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="text-left" for="">Tanda Tangan:</label>
+
+                <br />
+                <div id="sig"></div>
+                <br />
+                <button id="clear" class="btn btn-primary">Hapus Tanda Tangan</button>
+                <textarea id="signature64" name="signed" style="display: none"></textarea>
               </div>
 
             </div>

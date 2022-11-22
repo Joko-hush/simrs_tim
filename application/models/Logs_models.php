@@ -31,8 +31,6 @@ class Logs_models extends CI_Model
     }
     public function getLogs()
     {
-        $user = $this->master_models->getUser($this->session->userdata('phone'));
-        $id = $user['id'];
         $sql = "SELECT * FROM SIMRS_ACT.dbo.[logs]
                 ORDER BY waktu DESC
                 ";

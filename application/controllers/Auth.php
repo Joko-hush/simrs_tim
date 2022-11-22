@@ -58,7 +58,7 @@ class Auth extends CI_Controller
             $this->db->where('tlp', $phone);
             $user = $this->db->get('user')->row_array();
             $user_id = $user['id'];
-            $text = "No Hp Anda baru saja mendaftarkan di aplikasi simrs. di https://rsdustira.co.id/simrs_tim/ dengan user $username dan password $password";
+            $text = "No Hp Anda baru saja mendaftarkan di aplikasi simrs. di https://rsdustira.co.id/simrs_tim/ dengan user $username.";
             $this->Wa_model->sendWa($phone, $text);
 
             $this->Logs_models->logs('registrasi', '', '');
