@@ -16,7 +16,7 @@
           <div class="col-lg-12">
             <div class="input-group input-group-static mb-4">
               <label>Nama</label>
-              <input class="form-control" type="text" name="client" id="client" value="<?= $k['mengetahui']; ?>">
+              <input class="form-control" type="text" name="client" id="client" value="<?= $kunjungan['mengetahui']; ?>">
             </div>
           </div>
 
@@ -24,7 +24,7 @@
             <label class="text-left" for="">Tanda Tangan:</label>
             <br>
             <div id="sign">
-              <img src="<?= base_url('assets/img/ttd/') . $k['paraf']; ?>" alt="TTD Client" class="img img-thumbnail">
+              <img src="<?= base_url('assets/img/ttd/') . $kunjungan['paraf']; ?>" alt="TTD Client" class="img img-thumbnail">
             </div>
             <br />
             <div id="sig"></div>
