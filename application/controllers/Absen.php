@@ -15,7 +15,7 @@ class Absen extends CI_Controller
 
 
         $this->load->view('pages/layout/header', $data);
-        $this->load->view('pages/layout/nav', $data);
+        // $this->load->view('pages/layout/nav', $data);
         $this->load->view('pages/hadir', $data);
         $this->load->view('pages/layout/footer', $data);
     }

@@ -39,7 +39,7 @@ class Meeting extends CI_Controller
         $data['meeting'] = $pertemuan;
 
         $this->load->view('pages/layout/header', $data);
-        $this->load->view('pages/layout/nav', $data);
+        // $this->load->view('pages/layout/nav', $data);
         $this->load->view('pages/meeting', $data);
         $this->load->view('pages/layout/footer', $data);
     }
@@ -55,7 +55,7 @@ class Meeting extends CI_Controller
         $data['m'] = $m;
 
         $this->load->view('pages/layout/header', $data);
-        $this->load->view('pages/layout/nav', $data);
+        // $this->load->view('pages/layout/nav', $data);
         $this->load->view('pages/detailmeeting', $data);
         $this->load->view('pages/layout/footer', $data);
     }
@@ -115,7 +115,7 @@ class Meeting extends CI_Controller
         $data['daftarhadir'] = $m;
 
         $this->load->view('pages/layout/header', $data);
-        $this->load->view('pages/layout/nav', $data);
+        // $this->load->view('pages/layout/nav', $data);
         $this->load->view('pages/daftarhadir', $data);
         $this->load->view('pages/layout/footer', $data);
     }
