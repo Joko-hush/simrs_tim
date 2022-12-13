@@ -122,6 +122,27 @@
             ],
             stateSave: true
         });
+        $('#myTable').DataTable({
+
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Save to Excel',
+                    className: 'btn-success mr-1'
+                },
+                {
+                    extend: 'print',
+                    className: 'btn-warning mr-1',
+                    exportOptions: {
+                        stripHtml: false,
+                        columns: [0, 1, 2, 3, 4]
+                        //specify which column you want to print
+                    }
+                }
+            ],
+            stateSave: true
+        });
     });
 </script>
 
