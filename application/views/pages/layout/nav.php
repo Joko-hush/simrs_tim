@@ -19,6 +19,7 @@
                                  </a>
                                  <ul class="dropdown-menu">
                                      <li><a class="dropdown-item border-radius-md" href="<?= base_url('pages'); ?>">KEGIATAN SIM KELILING</a></li>
+                                     <li><a class="dropdown-item border-radius-md" href="<?= base_url('meeting'); ?>">Pembuatan Acara</a></li>
                                  </ul>
                              </li>
                              <?php if ($this->session->userdata('phone') == '62881024913954') : ?>
