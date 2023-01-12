@@ -40,4 +40,19 @@ function is_logged_in()
             return "checked='checked'";
         }
     }
+    function getArrayUser($tim)
+    {
+        $ci = get_instance();
+        $tim = explode(',', $tim);
+        $ca = count($tim);
+        $i = 1;
+        while ($i < $ca) {
+            $ci->db->select('user');
+            $ci->db->where('id', trim($tim[$i]));
+            $user = $ci->db->get('user')->row_array();
+            $ahh[] = $user['user'];
+            $i++;
+        }
+        return $ahh;
+    }
 }

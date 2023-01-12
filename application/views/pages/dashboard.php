@@ -84,7 +84,7 @@
                       <script>
                           var ctx = document.getElementById('grafikKunjunganPerMasalah').getContext('2d');
                           var myChart = new Chart(ctx, {
-                              type: 'pie',
+                              type: 'polarArea',
                               data: {
                                   labels: <?= json_encode($msl); ?>,
                                   datasets: [{
@@ -236,6 +236,7 @@
                                       <th>Client</th>
                                       <th>Paraf</th>
                                       <th>Status</th>
+                                      <th>TIM</th>
                                       <th>Option</th>
                                   </tr>
                               </thead>
@@ -258,14 +259,14 @@
                                               </a>
                                           </td>
                                           <td><?= $n++; ?></td>
-                                          <td><?= $k['waktu']; ?></td>
+                                          <td class="text-wrap"><?= substr($k['waktu'], 0, 19); ?></td>
                                           <?php if (!$u) : ?>
                                               <td></td>
                                           <?php else : ?>
                                               <td><?= $u['unit']; ?></td>
                                           <?php endif; ?>
-                                          <td><?= $k['masalah']; ?></td>
-                                          <td><?= $k['penyelsaian']; ?></td>
+                                          <td class="text-wrap"><?= $k['masalah']; ?></td>
+                                          <td class="text-wrap"><?= $k['penyelsaian']; ?></td>
                                           <td><?= $k['mengetahui']; ?></td>
                                           <td>
                                               <a href="<?= base_url('pages/paraf') . '?id=' . $k['id']; ?>" class="btn btn-success">
@@ -273,6 +274,28 @@
                                               </a>
                                           </td>
                                           <td><?= $c; ?></td>
+                                          <?php
+                                            $tim = $k['user_id'] . ',' . $k['partner'];
+                                            $tim = explode(',', $tim);
+                                            $ca = count($tim);
+                                            // return $tim;
+                                            $i = 0;
+                                            $ahh = [];
+                                            while ($i < $ca) {
+                                                $this->db->select('user');
+                                                $this->db->where('id', trim($tim[$i]));
+                                                $user = $this->db->get('user')->row_array();
+                                                if (!$user) {
+                                                    $user['user'] = '';
+                                                }
+                                                $ahh[] = $user['user'];
+                                                $i++;
+                                            }
+                                            $tim_it = implode(', ', $ahh);
+                                            ?>
+                                          <td class="text-wrap">
+                                              <?= $tim_it; ?>
+                                          </td>
                                           <td>
                                               <a href="<?= base_url('pages/edit') . '?id=' . $k['id']; ?>" class="btn btn-warning">
                                                   EDIT
@@ -318,6 +341,7 @@
                                       <th>Client</th>
                                       <th>Paraf</th>
                                       <th>Status</th>
+                                      <th>User</th>
                                       <th>Option</th>
                                   </tr>
                               </thead>
@@ -340,14 +364,14 @@
                                               </a>
                                           </td>
                                           <td><?= $n++; ?></td>
-                                          <td><?= $b['waktu']; ?></td>
+                                          <td class="text-wrap"><?= substr($b['waktu'], 0, 19); ?></td>
                                           <?php if (!$ub) : ?>
                                               <td></td>
                                           <?php else : ?>
                                               <td><?= $ub['unit']; ?></td>
                                           <?php endif; ?>
-                                          <td><?= $b['masalah']; ?></td>
-                                          <td><?= $b['penyelsaian']; ?></td>
+                                          <td class="text-wrap"><?= $b['masalah']; ?></td>
+                                          <td class="text-wrap"><?= $b['penyelsaian']; ?></td>
                                           <td><?= $b['mengetahui']; ?></td>
                                           <td>
                                               <a href="<?= base_url('pages/paraf') . '?id=' . $b['id']; ?>" class="btn btn-success">
@@ -355,6 +379,28 @@
                                               </a>
                                           </td>
                                           <td><?= $c; ?></td>
+                                          <?php
+                                            $tim = $b['user_id'] . ',' . $b['partner'];
+                                            $tim = explode(',', $tim);
+                                            $ca = count($tim);
+                                            // return $tim;
+                                            $i = 0;
+                                            $ahh = [];
+                                            while ($i < $ca) {
+                                                $this->db->select('user');
+                                                $this->db->where('id', trim($tim[$i]));
+                                                $user = $this->db->get('user')->row_array();
+                                                if (!$user) {
+                                                    $user['user'] = '';
+                                                }
+                                                $ahh[] = $user['user'];
+                                                $i++;
+                                            }
+                                            $tim_it = implode(', ', $ahh);
+                                            ?>
+                                          <td class="text-wrap">
+                                              <?= $tim_it; ?>
+                                          </td>
                                           <td>
                                               <a href="<?= base_url('pages/edit') . '?id=' . $b['id']; ?>" class="btn btn-warning">
                                                   EDIT
@@ -400,6 +446,7 @@
                                       <th>Client</th>
                                       <th>Paraf</th>
                                       <th>Status</th>
+                                      <th>User</th>
                                       <th>Option</th>
                                   </tr>
                               </thead>
@@ -422,14 +469,14 @@
                                               </a>
                                           </td>
                                           <td><?= $n++; ?></td>
-                                          <td><?= $s['waktu']; ?></td>
+                                          <td class="text-wrap"><?= substr($s['waktu'], 0, 19); ?></td>
                                           <?php if (!$us) : ?>
                                               <td></td>
                                           <?php else : ?>
                                               <td><?= $us['unit']; ?></td>
                                           <?php endif; ?>
-                                          <td><?= $s['masalah']; ?></td>
-                                          <td><?= $s['penyelsaian']; ?></td>
+                                          <td class="text-wrap"><?= $s['masalah']; ?></td>
+                                          <td class="text-wrap"><?= $s['penyelsaian']; ?></td>
                                           <td><?= $s['mengetahui']; ?></td>
                                           <td>
                                               <a href="<?= base_url('pages/paraf') . '?id=' . $s['id']; ?>" class="btn btn-success">
@@ -437,6 +484,28 @@
                                               </a>
                                           </td>
                                           <td><?= $c; ?></td>
+                                          <?php
+                                            $tim = $s['user_id'] . ',' . $s['partner'];
+                                            $tim = explode(',', $tim);
+                                            $ca = count($tim);
+                                            // return $tim;
+                                            $i = 0;
+                                            $ahh = [];
+                                            while ($i < $ca) {
+                                                $this->db->select('user');
+                                                $this->db->where('id', trim($tim[$i]));
+                                                $user = $this->db->get('user')->row_array();
+                                                if (!$user) {
+                                                    $user['user'] = '';
+                                                }
+                                                $ahh[] = $user['user'];
+                                                $i++;
+                                            }
+                                            $tim_it = implode(', ', $ahh);
+                                            ?>
+                                          <td class="text-wrap">
+                                              <?= $tim_it; ?>
+                                          </td>
                                           <td>
                                               <a href="<?= base_url('pages/edit') . '?id=' . $s['id']; ?>" class="btn btn-warning">
                                                   EDIT

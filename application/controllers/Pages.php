@@ -26,7 +26,8 @@ class Pages extends CI_Controller
 	{
 		$data['title'] = "SIMRS WEB APP";
 		$data['judul'] = "LIST KEGIATAN";
-		$user = $this->master_models->getUser($this->session->userdata('phone'));
+		$tlp = $this->session->userdata('phone');
+		$user = $this->master_models->getUser($tlp);
 		$user_id = $user['id'];
 
 
@@ -51,6 +52,9 @@ class Pages extends CI_Controller
 		$data['kegiatan'] = $this->master_models->getAllKegiatanByUser($date1, $date2, $user_id);
 		$data['masalah'] = $this->master_models->getAllMasalah();
 		$data['subunit'] = $this->master_models->getAllSubUnit();
+		$data['partner'] = $this->master_models->getUserExId($tlp);
+		// var_dump($data['kegiatan']);
+		// die;
 
 		$this->load->view('pages/layout/header', $data);
 		$this->load->view('pages/layout/nav', $data);
@@ -69,13 +73,37 @@ class Pages extends CI_Controller
 			redirect('pages');
 		} else {
 			$unit = $this->input->post('unit');
+			$partner = $this->input->post('partner');
 			$jp = $this->input->post('jp');
 			$unitlain = $this->input->post('unitlain');
 			$masalah = trim($this->input->post('masalah'));
 			$penyelsaian = trim($this->input->post('penyelsaian'));
-			if ($unit == '') {
-				$this->db->where('sub_unit', $unitlain);
-				$cek = $this->db->get('m_unit')->row_array();
+			if (!$partner) {
+				$partner[0] = '';
+				$partner[1] = '';
+				$partner[2] = '';
+				$partner = '';
+			} else {
+				$i = count($partner);
+				for ($a = 0; $a < $i; $a++) {
+					$partner[$a] = $partner[$a];
+				}
+
+				if (!$partner[0]) {
+					$partner[0] = '';
+				}
+				if (!$partner[1]) {
+					$partner[1] = '';
+				}
+				if (!$partner[2]) {
+					$partner[2] = '';
+				}
+				$partner = $partner[0] . ',' . $partner['1'] . ',' . $partner[2];
+			}
+
+			if ($unit == '-') {
+				$this->db->like('sub_unit', $unitlain);
+				$cek = $this->db->get('m_unit')->result_array();
 				$cekUnit = count($cek);
 				if ($cekUnit > 0) {
 					$unit = $cek['sub_unit'];
@@ -102,7 +130,8 @@ class Pages extends CI_Controller
 				'dateupdated' => time(),
 				'user_id' => $user_id,
 				'status' => 0,
-				'deleted' => 0
+				'deleted' => 0,
+				'partner' => $partner
 			];
 			$this->db->insert('kunjungan', $data);
 			$this->Logs_models->logs('Berhasil menambahkan data kegiatan', $unit, '');
@@ -128,14 +157,14 @@ class Pages extends CI_Controller
 	}
 	public function saveparaf()
 	{
+		$id = $this->input->post('id');
 		$this->form_validation->set_rules('client', 'Client', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Tidak ada perubahan</div>');
-			redirect('pages/paraf');
+			redirect('pages/paraf?id=$id');
 		} else {
-			$id = $this->input->post('id');
+			// $id = $this->input->post('id');
 			$client = $this->input->post('client');
-
 			$folderPath = FCPATH . "assets/img/ttd/";
 			$image_parts = explode(";base64,", $_POST['signed']);
 			$image_type_aux = explode("image/", $image_parts[0]);

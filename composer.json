@@ -13,7 +13,8 @@
 	"require": {
 		"php": ">=5.3.7",
 		"dompdf/dompdf": "^2.0",
-		"endroid/qr-code": "^4.6"
+		"endroid/qr-code": "^4.6",
+		"harvesthq/chosen": "^1.8"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

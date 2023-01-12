@@ -10,6 +10,12 @@ class master_models extends CI_Model
                 ";
         return $this->db->query($sql)->row_array();
     }
+    public function getUserExId($tlp)
+    {
+        $sql = "SELECT * FROM SIMRS_ACT.dbo.[user] WHERE NOT tlp = '$tlp'                
+                ";
+        return $this->db->query($sql)->result_array();
+    }
     public function getUserNameById($id)
     {
         $sql = "SELECT nama = user FROM [user] WHERE id = $id                
@@ -71,8 +77,9 @@ class master_models extends CI_Model
     }
     public function getAllKegiatan($date1, $date2)
     {
-        $sql = "SELECT * FROM SIMRS_ACT.dbo.kunjungan
-                WHERE CONVERT(VARCHAR(8),waktu,112) BETWEEN '$date1' AND '$date2' AND deleted = 0  ORDER BY waktu               
+        $sql = "SELECT * FROM SIMRS_ACT.dbo.[kunjungan]
+                WHERE CONVERT(VARCHAR(8),waktu,112) BETWEEN '$date1' AND '$date2' deleted = 0 
+                ORDER BY waktu           
                 ";
         return $this->db->query($sql)->result_array();
     }
@@ -92,7 +99,8 @@ class master_models extends CI_Model
     }
     public function getAllKegiatanByDate($date1, $date2)
     {
-        $sql = "SELECT * FROM SIMRS_ACT.dbo.kunjungan
+        $sql = "SELECT * FROM SIMRS_ACT.dbo.kunjungan A
+	            INNER JOIN SIMRS_ACT.dbo.[user] B ON B.id = A.user_id
                 WHERE CONVERT(VARCHAR(8),waktu,112) BETWEEN '$date1' AND '$date2' AND deleted = 0 
                 ORDER BY user_id             
                 ";
@@ -111,7 +119,13 @@ class master_models extends CI_Model
                 WHERE CONVERT(VARCHAR(8),waktu,112) BETWEEN '$date1' AND '$date2' AND user_id = $user AND deleted = 0 
                 ORDER BY waktu            
                 ";
-        return $this->db->query($sql)->result_array();
+        $data['user'] = $this->db->query($sql)->result_array();
+        $sql2 = "SELECT * FROM SIMRS_ACT.dbo.[kunjungan]
+                WHERE CONVERT(VARCHAR(8),waktu,112) BETWEEN '$date1' AND '$date2' AND partner like '%,$user%' AND deleted = 0 
+                ORDER BY waktu            
+                ";
+        $data['partner'] = $this->db->query($sql2)->result_array();
+        return $data;
     }
     public function getKegiatanSelesai($date1, $date2)
     {

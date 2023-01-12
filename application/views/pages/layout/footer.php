@@ -29,7 +29,8 @@
 <!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
 <script src="<?= base_url(); ?>assets/js/plugins/parallax.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
-<script src="<?= base_url(); ?>assets/js/material-kit.min.js?v=3.0.5" type="text/javascript"></script>
+<script src="<?= base_url(); ?>assets/js/material-kit.min.js?v=3.0.6" type="text/javascript"></script>
+<!-- <script src="https://cdn.jsdelivr.net/gh/djibe/material@4.6.2-1.0/js/material.min.js" crossorigin></script> -->
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -45,6 +46,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 
+<!-- Scripts -->
+
+<!-- Plugin jQuery dan CSS: -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" type="text/css" />
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#partner').multiselect({
+            includeSelectAllOption: true, // add select all option as usual
+            optionClass: function(element) {
+                var value = $(element).val();
+
+                if (value % 2 == 0) {
+                    return 'even';
+                } else {
+                    return 'odd';
+                }
+            }
+        });
+    });
+</script>
+<style type="text/css">
+    #example-optionClass-container .multiselect-container li.odd {
+        background: #eeeeee;
+    }
+</style>
 <script type="text/javascript">
     if (document.getElementById('state1')) {
         const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
