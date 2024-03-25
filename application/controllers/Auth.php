@@ -39,6 +39,9 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[6]|matches[password2]', ['matches' => 'Password not match!', 'min_length' => 'password too short!']);
         $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
         $user_ip = $this->ip_models->get_client_ip_2();
+        $id = password_hash('123456', PASSWORD_DEFAULT);
+        var_dump($id);
+        die;
         if ($this->form_validation->run() == false) {
             $data['title'] = 'SIMRS WEB APP';
 

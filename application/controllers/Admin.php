@@ -48,19 +48,11 @@ class Admin extends CI_Controller
         $data['selesai'] = $this->master_models->getKegiatanSelesai($date1, $date2);
         $data['belum'] = $this->master_models->getKegiatanBelumSelesai($date1, $date2);
         $data['masalah'] = $this->master_models->getAllMasalah();
-        $data['subunit'] = $this->master_models->getAllSubUnitbyDate($date1, $date2);
         $data['jumlahkegiatan'] = count($data['kegiatan']);
         $data['jumlahselesai'] = count($data['selesai']);
         $data['jumlahbelum'] = count($data['belum']);
-        if (!$data['subunit']) {
-            $data['subunit'] = $this->master_models->getAllSubUnit();
-        }
-        foreach ($data['subunit'] as $u) {
-            $jmlUnit[] = $this->master_models->getJumlahByUnit($date1, $date2, $u['subunit']);
-        }
-        // var_dump($jmlUnit);
-        // die;
-        $data['jmlUnit'] = $jmlUnit;
+
+        $data['jmlUnit'] = $this->master_models->getKunjunganPerUnit($date1, $date2);
         $data['jm'] = $this->master_models->getKegiatanByJenisMasalah($date1, $date2);
 
         $this->load->view('pages/layout/header', $data);

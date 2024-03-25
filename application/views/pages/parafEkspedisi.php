@@ -19,29 +19,29 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-2">Unit</div>
-                <div class="col-4"><?= $kunjungan['instalasi']; ?></div>
+                <div class="col-4"><?= $kunjungan['unit']; ?></div>
                 <div class="col-2">Tgl</div>
-                <div class="col-4"><?= substr($kunjungan['waktu'], 0, 19); ?></div>
+                <div class="col-4"><?= $kunjungan['tanggal']; ?></div>
               </div>
               <div class="row">
-                <div class="col-2">Masalah</div>
-                <div class="col-10"><?= $kunjungan['masalah']; ?></div>
+                <div class="col-2">Nomor</div>
+                <div class="col-10"><?= $kunjungan['nomor']; ?></div>
               </div>
               <div class="row">
-                <div class="col-2">Penyelsaian</div>
-                <div class="col-10"><?= $kunjungan['penyelsaian']; ?></div>
+                <div class="col-2">Perihal</div>
+                <div class="col-10"><?= $kunjungan['perihal']; ?></div>
               </div>
             </div>
           </div>
         <?php else : ?>
         <?php endif; ?>
-        <form method="POST" action="<?= base_url('pages/saveparaf'); ?>">
+        <form method="POST" action="<?= base_url('ekspedisi/saveparaf'); ?>">
           <input type="hidden" name="id" value="<?= $kunjungan['id']; ?>">
           <input type="hidden" name="kdu" value="<?= $kdu; ?>">
           <div class="col-lg-12">
             <div class="input-group input-group-static mb-4">
               <label>Nama</label>
-              <input class="form-control" type="text" name="client" id="client" value="<?= $kunjungan['mengetahui']; ?>">
+              <input class="form-control" type="text" name="client" id="client" value="<?= $kunjungan['penerima']; ?>">
             </div>
           </div>
 

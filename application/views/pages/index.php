@@ -49,7 +49,7 @@
         <table class="table table-bordered table-sm" id="tableKegiatan">
           <thead>
             <tr>
-              <th></th>
+              <!-- <th></th> -->
               <th>No</th>
               <th>Waktu</th>
               <th>Unit</th>
@@ -75,25 +75,37 @@
 
               ?>
               <tr class="<?= $c; ?>">
-                <td class="text-center">
+                <!-- <td class="text-center">
                   <a href="<?= base_url('pages/lihatKunjungan') . '?id=' . $ku['id']; ?>">
                     <i class="fa-solid fa-eye"></i>
                   </a>
+                </td> -->
+                <td>
+                  <span>
+                    <?= $n++; ?>
+                  </span>
+                  <a class="badge text-bg-success" href="<?= base_url('pages/lihatKunjungan') . '?id=' . $ku['id']; ?>">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
                 </td>
-                <td><?= $n++; ?></td>
                 <td class="text-wrap"><?= substr($ku['waktu'], 0, 19); ?></td>
                 <?php if (!$u) : ?>
                   <td></td>
                 <?php else : ?>
                   <td><?= $u['unit']; ?></td>
                 <?php endif; ?>
-                <td><?= $ku['masalah']; ?></td>
-                <td><?= $ku['penyelsaian']; ?></td>
+                <td class="text-wrap"><?= $ku['masalah']; ?></td>
+                <td class="text-wrap"><?= $ku['penyelsaian']; ?></td>
                 <td><?= $ku['mengetahui']; ?></td>
-                <td>
-                  <a href="<?= base_url('pages/paraf') . '?id=' . $ku['id']; ?>" class="btn btn-success">
+                <td class="text-wrap">
+                  <?php
+                  $u = base_url('pages/paraf') . '?id=' . $ku['id'];
+                  $client = base_url('paraf/shareparaf') . '?id=' . $ku['id'];
+                  ?>
+                  <a href="<?= $u; ?>" class="btn btn-success">
                     PARAF
                   </a>
+                  <a href="whatsapp://send?text=<?= $client; ?>" class="btn btn-primary"><i class="fa-solid fa-share-nodes"></i></a>
                 </td>
                 <td><?= $c; ?></td>
                 <?php

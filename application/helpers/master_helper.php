@@ -56,3 +56,15 @@ function is_logged_in()
         return $ahh;
     }
 }
+function tgl($date)
+{
+    $y = substr($date, 0, 4);
+    $m = substr($date, 4, 2);
+    $d = substr($date, 6, 2);
+    return $y . '-' . $m . '-' . $d;
+}
+function _tgl($date)
+{
+    list($y, $m, $d) = explode('-', $date);
+    return $y . $m . $d;
+}

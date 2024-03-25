@@ -146,6 +146,7 @@ class Pages extends CI_Controller
 		$user = $this->master_models->getUser($this->session->userdata('phone'));
 		$user_id = $user['id'];
 		$id = $this->input->get('id');
+		$data['kdu'] = 'user';
 		$k = $this->db->get_where('kunjungan', ['id' => $id])->row_array();
 		$data['kunjungan'] = $k;
 		$this->Logs_models->logs('Membuka form paraf', '', $id);
@@ -158,6 +159,7 @@ class Pages extends CI_Controller
 	public function saveparaf()
 	{
 		$id = $this->input->post('id');
+		$kdu = $this->input->post('kdu');
 		$this->form_validation->set_rules('client', 'Client', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Tidak ada perubahan</div>');
@@ -177,7 +179,11 @@ class Pages extends CI_Controller
 				$this->db->update('kunjungan');
 				$this->Logs_models->logs('Menambahkan paraf', $client, $id);
 				$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
-				redirect('pages');
+				if ($kdu == 'client') {
+					redirect('paraf');
+				} else {
+					redirect('pages');
+				}
 			} else {
 				$image_base64 = base64_decode($image_parts[1]);
 				$filename = uniqid() . '.' . $image_type;
@@ -191,7 +197,11 @@ class Pages extends CI_Controller
 				$this->db->update('kunjungan');
 				$this->Logs_models->logs('Menambahkan paraf', $client, $id);
 				$this->session->set_flashdata('message', '<div class="alert alert-success text-white" role="alert">Sukses berhasil di paraf.</div>');
-				redirect('pages');
+				if ($kdu == 'client') {
+					redirect('paraf');
+				} else {
+					redirect('pages');
+				}
 			}
 		}
 	}

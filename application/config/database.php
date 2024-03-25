@@ -72,8 +72,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-$host = "172.165.115.210";
-// $host = "103.130.62.10,1004";
+// $host = "172.165.115.210";
+$host = "103.130.62.10,1004";
 
 $db['default'] = array(
 	'dsn'	=> '',

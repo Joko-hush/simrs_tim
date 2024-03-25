@@ -190,4 +190,23 @@ class master_models extends CI_Model
         }
         return $data;
     }
+    public function getKunjunganPerUnit($date1, $date2)
+    {
+        $sql = "SELECT
+                unit = xx.unit,
+                jml = COUNT(xx.unit)
+                FROM
+                (SELECT
+                    unit = U.sub_unit 
+                FROM
+                    [SIMRS_ACT].[dbo].[kunjungan] K
+                    INNER JOIN [SIMRS_ACT].[dbo].[m_unit] U ON U.id = K.unit_id 
+                WHERE
+                    CONVERT ( VARCHAR ( 8 ), waktu, 112 ) BETWEEN '$date1' 
+                    AND '$date2' 
+                    AND deleted = 0)xx
+                    GROUP BY xx.unit";
+        $data = $this->db->query($sql)->result_array();
+        return $data;
+    }
 }
